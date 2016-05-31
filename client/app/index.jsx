@@ -3,8 +3,9 @@
 
 import React from 'react';
 import {render} from 'react-dom';
+import request from 'superagent';
 
-class TestComponent extends React.Component {
+class LikesCounterComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {likesCounter : 0};
@@ -20,7 +21,30 @@ class TestComponent extends React.Component {
         this.setState({likesCounter : 0});
     }
 
+    componentDidMount() {
+        request
+            .get('/likescounter')
+            .end((err, res)=> {
+                if (err) {
+                    console.log('cannot get data')
+                }
+                this.setState({likesCounter: res.body});
+            });
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        request
+            .post('/likescounter')
+            .send({likesCounter: this.state.likesCounter})
+            .end((err, res)=> {
+                if (err) {
+                    console.log('cannot get data')
+                }
+            });
+    }
+
     render() {
+
         return (
             <div>
                 Likes: <span>{this.state.likesCounter}</span>
@@ -35,8 +59,8 @@ class App extends React.Component {
     render () {
         return (
             <div>
-                <p> Hello React!</p>
-                <TestComponent />
+                <h1> Hello React!</h1>
+                <LikesCounterComponent />
             </div>
         );
     }

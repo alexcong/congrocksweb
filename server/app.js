@@ -12,9 +12,23 @@ app
     .use(middlewares.favicon())
     .use(middlewares.logger())
 ;
-var router = middlewares.router();
+
+//temp var
+var counter = 0;
 
 /* router */
+var router = middlewares.router();
+router
+    .get('/likescounter', function*(next) {
+        this.body = counter;
+        console.log('counter', counter);
+    })
+    .post('/likescounter', function*(next) {
+        counter = this.request.body.likesCounter;
+        console.log('counter', counter);
+        this.status = 200;
+    })
+;
 
 app
     .use(router.routes())
