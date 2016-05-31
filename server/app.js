@@ -24,10 +24,13 @@ var CounterSchema = new Schema({
 
 var Counter = mongoose.model('Counter', CounterSchema);
 var counter0 = new Counter({counterId: 0, likesCounter: 0});
-counter0.save((err)=> {
-    if (err) {
-        console.log(err);
-    }
+app.use(function*(next) {
+    counter0.save((err)=> {
+        if (err) {
+            console.log(err);
+        }
+    });
+    yield next;
 });
 
 /* router */
