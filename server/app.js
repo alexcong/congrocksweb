@@ -3,12 +3,13 @@
  */
 var app = require('koa')();
 var middlewares = require('koa-middlewares');
+var serve = require('koa-static');
 var path = require('path');
 var mongoose = require('mongoose');
 
 app
-    .use(middlewares.staticCache(path.resolve(__dirname, '../client/public')))
-    .use(middlewares.staticCache(path.resolve(__dirname, '../bower_components')))
+    .use(serve(path.resolve(__dirname, '../client/public')))
+    .use(serve(path.resolve(__dirname, '../bower_components')))
     .use(middlewares.bodyParser())
     .use(middlewares.favicon())
     .use(middlewares.logger())
